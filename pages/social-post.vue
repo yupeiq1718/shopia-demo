@@ -1,6 +1,6 @@
-<script setup lang="ts">
-</script>
 
 <template>
-  <div />
+  <div class="container px-5 py-24 mx-auto flex">
+    <SocialPostQuery />
+  </div>
 </template>
