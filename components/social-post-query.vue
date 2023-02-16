@@ -9,17 +9,16 @@ const runtimeConfig = useRuntimeConfig()
 
 const isLoading = ref(false)
 
-type SocialPostResponse = {
-  response: {
-    generated_text: string
-  }
-}
-
 const generateSocialPost = async (text: string) => {
   isLoading.value = true
-  const { data } = await useLazyFetch(`${runtimeConfig.public.apiBase}?token=${runtimeConfig.public.apiToken}&writer=social posts&input_1=${text}`, {
+  const { data } = await useLazyFetch(`${runtimeConfig.public.apiBase}?token=${runtimeConfig.public.apiToken}&writer=social posts&language=Chinese&input_1=${text}`, {
     method: 'POST'
   })
+  type SocialPostResponse = {
+    response: {
+      generated_text: string
+    }
+  }
   socialPosts.value.push((data.value as SocialPostResponse)?.response.generated_text)
   description.value = ''
   switchValue.value = 'Output'
