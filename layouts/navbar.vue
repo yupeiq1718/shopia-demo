@@ -19,3 +19,10 @@ import IconLogo from 'assets/icons/logo.svg'
     </div>
   </header>
 </template>
+
+<style>
+a.router-link-active {
+  @apply text-green-500;
+}
+
+</style>
