@@ -28,7 +28,7 @@ const generateSocialPost = async (text: string) => {
 </script>
 
 <template>
-  <section class="lg:w-1/3 md:w-1/2 bg-gray-900 shadow-md rounded-lg p-8 flex flex-col md:mr-auto w-full relative z-10">
+  <section class="bg-gray-900 shadow-md rounded-lg p-8 flex flex-col mx-2">
     <BaseSwitch
       v-model:value="switchValue"
       :title-list="['Input', 'Output']"
