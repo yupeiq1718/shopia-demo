@@ -8,6 +8,7 @@ interface Props {
 
 interface Emits {
   (event: 'add-editor-content'): void
+  (event: 'remove-social-post'): void
 }
 
 const props = defineProps<Props>()
@@ -23,7 +24,10 @@ const emits = defineEmits<Emits>()
     </p>
     <span class="inline-flex w-full justify-end">
       <a class="text-gray-500">
-        <IconDelete class="fill-gray-400 cursor-pointer hover:fill-green-400" />
+        <IconDelete
+          class="fill-gray-400 cursor-pointer hover:fill-green-400"
+          @click="emits('remove-social-post')"
+        />
       </a>
       <a class="text-gray-500">
         <IconPlay

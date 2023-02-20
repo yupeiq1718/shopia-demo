@@ -30,6 +30,10 @@ const generateSocialPost = async (text: string) => {
   isLoading.value = false
 }
 
+const removeSocialPost = (index:number) => {
+  socialPosts.value.splice(index, 1)
+}
+
 </script>
 
 <template>
@@ -64,10 +68,11 @@ const generateSocialPost = async (text: string) => {
       class="w-full"
     >
       <SocialPostCard
-        v-for="socialPost of socialPosts"
+        v-for="(socialPost, index) of socialPosts"
         :key="socialPost"
         :title="socialPost"
         @add-editor-content="emits('add-editor-content', socialPost)"
+        @remove-social-post="removeSocialPost(index)"
       />
     </section>
   </section>
