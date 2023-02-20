@@ -37,13 +37,15 @@ const removeSocialPost = (index:number) => {
 </script>
 
 <template>
-  <section class="bg-gray-900 shadow-md rounded-lg p-8 flex flex-col mx-2">
-    <BaseSwitch
-      v-model:value="switchValue"
-      :title-list="['Input', 'Output']"
-      class="mb-8"
-    />
-    <section
+  <section class="bg-gray-900 shadow-md rounded-lg p-8 mx-2 flex flex-col">
+    <header class="flex flex-col">
+      <BaseSwitch
+        v-model:value="switchValue"
+        :title-list="['Input', 'Output']"
+        class="mb-8"
+      />
+    </header>
+    <article
       v-if="switchValue === 'Input'"
       class="w-full"
     >
@@ -62,18 +64,20 @@ const removeSocialPost = (index:number) => {
         </span>
         <span v-else>Generate</span>
       </button>
-    </section>
-    <section
+    </article>
+    <article
       v-if="switchValue === 'Output'"
-      class="w-full"
+      class="w-full flex-1 relative overflow-auto"
     >
-      <SocialPostCard
-        v-for="(socialPost, index) of socialPosts"
-        :key="socialPost"
-        :title="socialPost"
-        @add-editor-content="emits('add-editor-content', socialPost)"
-        @remove-social-post="removeSocialPost(index)"
-      />
-    </section>
+      <div class="absolute pr-4">
+        <SocialPostCard
+          v-for="(socialPost, index) of socialPosts"
+          :key="socialPost"
+          :title="socialPost"
+          @add-editor-content="emits('add-editor-content', socialPost)"
+          @remove-social-post="removeSocialPost(index)"
+        />
+      </div>
+    </article>
   </section>
 </template>
