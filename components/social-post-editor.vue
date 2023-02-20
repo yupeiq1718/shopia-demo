@@ -6,7 +6,7 @@ const content = ref('')
 
 const addContent = (text:string) => {
   const htmlText = `<p>${text}</p>`
-  content.value = htmlText.concat(content.value)
+  content.value = content.value.concat(htmlText)
 }
 
 defineExpose({ addContent })
