@@ -20,7 +20,7 @@ const useShopiaApi = async ({ url, method }:Request) => {
   return response
 }
 
-const readSocialPost = async (text:string) => {
+const createSocialPost = async (text:string) => {
   const { status, response } = await useShopiaApi({
     url: `&writer=social posts&language=Chinese&input_1=${text}`,
     method: 'post'
@@ -30,5 +30,5 @@ const readSocialPost = async (text:string) => {
 }
 
 export default () => ({
-  readSocialPost
+  createSocialPost
 })

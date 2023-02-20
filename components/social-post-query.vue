@@ -13,11 +13,11 @@ const socialPosts = ref<string[]>([])
 
 const isLoading = ref(false)
 
-const { readSocialPost } = useApi()
+const { createSocialPost } = useApi()
 
 const generateSocialPost = async (text: string) => {
   isLoading.value = true
-  const { response } = await readSocialPost(text)
+  const { response } = await createSocialPost(text)
 
   socialPosts.value.push(response.generated_text)
   description.value = ''
