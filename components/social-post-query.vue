@@ -67,9 +67,9 @@ const removeSocialPost = (index:number) => {
     </article>
     <article
       v-if="switchValue === 'Output'"
-      class="w-full flex-1 relative overflow-auto"
+      class="w-full flex-1 relative lg:overflow-auto"
     >
-      <div class="absolute pr-4">
+      <div class="lg:absolute pr-4">
         <SocialPostCard
           v-for="(socialPost, index) of socialPosts"
           :key="socialPost"
