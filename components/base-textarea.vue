@@ -15,7 +15,7 @@ const emits = defineEmits<Emits>()
 </script>
 
 <template>
-  <div class="relative mb-4">
+  <div class="relative">
     <label for="email" class="leading-7 text-sm text-gray-400">{{ props.title }}</label>
     <textarea
       id="email"
