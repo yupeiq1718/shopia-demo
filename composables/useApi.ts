@@ -38,6 +38,15 @@ const createArticleTitle = async (text:string) => {
   return { status, response }
 }
 
+const createArticleOutline = async (text:string) => {
+  const { status, response } = await useShopiaApi({
+    url: `&writer=article outlines&language=Chinese&input_1=${text}`,
+    method: 'post'
+  })
+
+  return { status, response }
+}
+
 export default () => ({
-  createSocialPost, createArticleTitle
+  createSocialPost, createArticleTitle, createArticleOutline
 })
