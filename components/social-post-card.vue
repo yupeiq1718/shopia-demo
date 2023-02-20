@@ -6,7 +6,14 @@ interface Props {
   title: string
 }
 
+interface Emits {
+  (event: 'add-editor-content'): void
+}
+
 const props = defineProps<Props>()
+
+const emits = defineEmits<Emits>()
+
 </script>
 
 <template>
@@ -16,10 +23,13 @@ const props = defineProps<Props>()
     </p>
     <span class="inline-flex w-full justify-end">
       <a class="text-gray-500">
-        <IconDelete class="fill-gray-400" />
+        <IconDelete class="fill-gray-400 cursor-pointer hover:fill-green-400" />
       </a>
       <a class="text-gray-500">
-        <IconPlay class="fill-gray-400" />
+        <IconPlay
+          class="fill-gray-400 cursor-pointer hover:fill-green-400"
+          @click="emits('add-editor-content')"
+        />
       </a>
     </span>
   </div>

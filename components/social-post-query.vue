@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import IconLoading from 'assets/icons/loading.svg'
 
+interface Emits {
+  (event: 'add-editor-content', value: string): void
+}
+const emits = defineEmits<Emits>()
+
 const switchValue = ref('Input')
 const description = ref('')
 
@@ -58,7 +63,12 @@ const generateSocialPost = async (text: string) => {
       v-if="switchValue === 'Output'"
       class="w-full"
     >
-      <SocialPostCard v-for="socialPost of socialPosts" :key="socialPost" :title="socialPost" />
+      <SocialPostCard
+        v-for="socialPost of socialPosts"
+        :key="socialPost"
+        :title="socialPost"
+        @add-editor-content="emits('add-editor-content', socialPost)"
+      />
     </section>
   </section>
 </template>
