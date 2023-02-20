@@ -1,6 +1,6 @@
 <template>
-  <div>
+  <div class="h-[100vh] flex flex-col">
     <NuxtLayout name="navbar" />
-    <NuxtPage />
+    <NuxtPage class="flex-1" />
   </div>
 </template>
