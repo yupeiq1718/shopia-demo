@@ -7,8 +7,8 @@ interface Props {
 }
 
 interface Emits {
-  (event: 'add-editor-content'): void
-  (event: 'remove-social-post'): void
+  (event: 'add'): void
+  (event: 'remove'): void
 }
 
 const props = defineProps<Props>()
@@ -26,13 +26,13 @@ const emits = defineEmits<Emits>()
       <a class="text-gray-500">
         <IconDelete
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
-          @click="emits('remove-social-post')"
+          @click="emits('remove')"
         />
       </a>
       <a class="text-gray-500">
         <IconPlay
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
-          @click="emits('add-editor-content')"
+          @click="emits('add')"
         />
       </a>
     </span>

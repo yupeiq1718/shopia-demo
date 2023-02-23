@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import IconLoading from 'assets/icons/loading.svg'
 
+interface Emits {
+  (event: 'add-editor-title', value: string): void
+}
+const emits = defineEmits<Emits>()
+
 const switchValue = ref('Input')
 const description = ref('')
 const articleTitle = ref('')
@@ -12,6 +17,10 @@ const setArticleTitle = (text: string) => {
 const titleList = ref<string[]>([])
 
 const articleOutline = ref<string[]>([])
+
+const removeArticleOutlineTitle = (index: number) => {
+  articleOutline.value.splice(index, 1)
+}
 
 const isLoading = reactive({
   titleList: false,
@@ -107,9 +116,11 @@ const generateArticleOutline = async (text: string) => {
       class="w-full relative lg:overflow-auto pr-2"
     >
       <ArticleWriterCard
-        v-for="title of articleOutline"
+        v-for="(title, index) of articleOutline"
         :key="title"
         :title="title"
+        @add="emits('add-editor-title', title)"
+        @remove="removeArticleOutlineTitle(index)"
       />
     </article>
   </section>
