@@ -11,6 +11,8 @@ const setArticleTitle = (text: string) => {
 
 const titleList = ref<string[]>([])
 
+const articleOutline = ref<string[]>([])
+
 const isLoading = reactive({
   titleList: false,
   articleTitle: false
@@ -29,7 +31,7 @@ const generateArticleOutline = async (text: string) => {
   isLoading.articleTitle = true
   const { response } = await createArticleOutline(text)
   const data = response.generated_text.split('\n').map(title => title.split('. ')[1] || title)
-  titleList.value = data
+  articleOutline.value = data
   description.value = ''
   titleList.value = []
   switchValue.value = 'Output'
@@ -99,6 +101,16 @@ const generateArticleOutline = async (text: string) => {
           <span v-else>Use As Title</span>
         </button>
       </footer>
+    </article>
+    <article
+      v-if="switchValue === 'Output'"
+      class="w-full relative lg:overflow-auto pr-2"
+    >
+      <ArticleWriterCard
+        v-for="title of articleOutline"
+        :key="title"
+        :title="title"
+      />
     </article>
   </section>
 </template>
