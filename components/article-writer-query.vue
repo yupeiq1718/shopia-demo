@@ -115,7 +115,7 @@ const generateArticleOutline = async (text: string) => {
       v-if="switchValue === 'Output'"
       class="w-full relative lg:overflow-auto pr-2"
     >
-      <ArticleWriterCard
+      <BaseCard
         v-for="(title, index) of articleOutline"
         :key="title"
         :title="title"
