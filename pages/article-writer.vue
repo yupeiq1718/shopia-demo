@@ -9,7 +9,7 @@ const editor = ref<InstanceType<typeof ArticleWriterEditor> | null>(null)
   <div class="container grid grid-cols-12 px-4 py-4 lg:py-8 mx-auto lg:overflow-hidden">
     <ArticleWriterQuery
       class="col-span-12 lg:col-span-5 m-2 overflow-hidden"
-      @add-editor-title="editor?.addTitle"
+      @add-editor-title="editor?.createTitle"
     />
     <ArticleWriterEditor
       ref="editor"

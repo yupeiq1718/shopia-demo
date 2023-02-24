@@ -13,11 +13,22 @@ const addContent = (text:string) => {
 
 const titleList = ref<string[]>([])
 
-const addTitle = (title:string) => {
+const createTitle = (title:string) => {
   titleList.value.push(title)
 }
 
-defineExpose({ addContent, addTitle })
+const updateTitle = ({ index, title }: {
+  index: number,
+  title: string
+}) => {
+  titleList.value[index] = title
+}
+
+const deleteTitle = (index: number) => {
+  titleList.value.splice(index, 1)
+}
+
+defineExpose({ addContent, createTitle })
 
 </script>
 
@@ -27,12 +38,14 @@ defineExpose({ addContent, addTitle })
       v-if="switchValue === 'Input'"
       class="w-full relative lg:overflow-auto pr-2"
     >
-      <p
-        v-for="title of titleList"
+      <ArticleWriterTitle
+        v-for="(title, index) of titleList"
         :key="title"
-      >
-        {{ title }}
-      </p>
+        :title="title"
+        :index="index"
+        @save="updateTitle"
+        @delete="deleteTitle"
+      />
     </section>
     <section
       v-if="switchValue === 'Output'"
