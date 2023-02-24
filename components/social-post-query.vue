@@ -10,21 +10,16 @@ const switchValue = ref('Input')
 const description = ref('')
 
 const socialPosts = ref<string[]>([])
-const runtimeConfig = useRuntimeConfig()
 
 const isLoading = ref(false)
 
+const { createSocialPost } = useApi()
+
 const generateSocialPost = async (text: string) => {
   isLoading.value = true
-  const { data } = await useLazyFetch(`${runtimeConfig.public.apiBase}?token=${runtimeConfig.public.apiToken}&writer=social posts&language=Chinese&input_1=${text}`, {
-    method: 'POST'
-  })
-  type SocialPostResponse = {
-    response: {
-      generated_text: string
-    }
-  }
-  socialPosts.value.push((data.value as SocialPostResponse)?.response.generated_text)
+  const { response } = await createSocialPost(text)
+
+  socialPosts.value.push(response.generated_text)
   description.value = ''
   switchValue.value = 'Output'
   isLoading.value = false
@@ -69,13 +64,13 @@ const removeSocialPost = (index:number) => {
       v-if="switchValue === 'Output'"
       class="w-full flex-1 relative lg:overflow-auto"
     >
-      <div class="lg:absolute pr-4">
-        <SocialPostCard
+      <div class="absolute pr-4">
+        <BaseCard
           v-for="(socialPost, index) of socialPosts"
           :key="socialPost"
           :title="socialPost"
-          @add-editor-content="emits('add-editor-content', socialPost)"
-          @remove-social-post="removeSocialPost(index)"
+          @add="emits('add-editor-content', socialPost)"
+          @remove="removeSocialPost(index)"
         />
       </div>
     </article>
