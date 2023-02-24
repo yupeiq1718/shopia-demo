@@ -3,7 +3,7 @@ import IconEdit from 'assets/icons/edit.svg'
 import IconDelete from 'assets/icons/delete.svg'
 import IconUp from 'assets/icons/up.svg'
 import IconDown from 'assets/icons/down.svg'
-import IconCheck from 'assets/icons/Check.svg'
+import IconCheck from 'assets/icons/check.svg'
 
 interface Props {
   title: string,
