@@ -2,6 +2,12 @@
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
+interface Props {
+  articleTitle: string
+}
+
+const props = defineProps<Props>()
+
 const switchValue = ref('Input')
 
 const content = ref('')
@@ -11,31 +17,35 @@ const addContent = (text:string) => {
   content.value = content.value.concat(htmlText)
 }
 
-const titleList = ref<string[]>([])
+const sectionTitleList = ref<string[]>([])
 
-const createTitle = (title:string) => {
-  titleList.value.push(title)
+const createSectionTitle = (title:string) => {
+  sectionTitleList.value.push(title)
 }
 
-const updateTitle = ({ index, title }: {
+const updateSectionTitle = ({ index, title }: {
   index: number,
   title: string
 }) => {
-  titleList.value[index] = title
+  sectionTitleList.value[index] = title
 }
 
-const deleteTitle = (index: number) => {
-  titleList.value.splice(index, 1)
+const deleteSectionTitle = (index: number) => {
+  sectionTitleList.value.splice(index, 1)
 }
 
-const switchTitle = (firstIndex: number, secondIndex: number) => {
-  if (!titleList.value[firstIndex] || !titleList.value[secondIndex]) {
+const switchSectionTitle = (firstIndex: number, secondIndex: number) => {
+  if (!sectionTitleList.value[firstIndex] || !sectionTitleList.value[secondIndex]) {
     return
   }
-  [titleList.value[firstIndex], titleList.value[secondIndex]] = [titleList.value[secondIndex], titleList.value[firstIndex]]
+  [sectionTitleList.value[firstIndex], sectionTitleList.value[secondIndex]] = [sectionTitleList.value[secondIndex], sectionTitleList.value[firstIndex]]
 }
 
-defineExpose({ addContent, createTitle })
+const generateArticle = () => {
+  console.log('generateArticle')
+}
+
+defineExpose({ addContent, createSectionTitle })
 
 </script>
 
@@ -46,15 +56,24 @@ defineExpose({ addContent, createTitle })
       class="w-full relative lg:overflow-auto pr-2"
     >
       <ArticleWriterTitle
-        v-for="(title, index) of titleList"
+        v-for="(title, index) of sectionTitleList"
         :key="title"
         :title="title"
         :index="index"
-        @save="updateTitle({ index, title: $event})"
-        @delete="deleteTitle(index)"
-        @switch-up="switchTitle(index, index - 1)"
-        @switch-down="switchTitle(index, index + 1)"
+        @save="updateSectionTitle({ index, title: $event})"
+        @delete="deleteSectionTitle(index)"
+        @switch-up="switchSectionTitle(index, index - 1)"
+        @switch-down="switchSectionTitle(index, index + 1)"
       />
+      <button
+        class="w-full text-white bg-green-500 border-0 py-4 px-6 focus:outline-none hover:bg-green-600 rounded text-lg flex justify-center"
+        @click="generateArticle"
+      >
+        <span v-if="false" class="mx-2 animate-spin">
+          <IconLoading />
+        </span>
+        <span v-else>Generate Article</span>
+      </button>
     </section>
     <section
       v-if="switchValue === 'Output'"

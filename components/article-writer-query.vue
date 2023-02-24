@@ -2,16 +2,17 @@
 import IconLoading from 'assets/icons/loading.svg'
 
 interface Emits {
-  (event: 'add-editor-title', value: string): void
+  (event: 'add-section-title', value: string): void,
+  (event: 'set-article-title', value: string): void
 }
 const emits = defineEmits<Emits>()
 
 const switchValue = ref('Input')
 const description = ref('')
-const articleTitle = ref('')
+const editedArticleTitle = ref('')
 
-const setArticleTitle = (text: string) => {
-  articleTitle.value = text
+const setEditedArticleTitle = (text: string) => {
+  editedArticleTitle.value = text
 }
 
 const titleList = ref<string[]>([])
@@ -24,27 +25,28 @@ const removeArticleOutlineTitle = (index: number) => {
 
 const isLoading = reactive({
   titleList: false,
-  articleTitle: false
+  editedArticleTitle: false
 })
 
 const { createArticleTitle, createArticleOutline } = useApi()
 
 const generateArticleTitle = async (text: string) => {
   isLoading.titleList = true
+  emits('set-article-title', editedArticleTitle.value)
   const { response } = await createArticleTitle(text)
   const data = response.generated_text.split('\n').map(title => title.split('. ')[1] || title)
   titleList.value = data
   isLoading.titleList = false
 }
-const generateArticleOutline = async (text: string) => {
-  isLoading.articleTitle = true
+const generateSectionOutline = async (text: string) => {
+  isLoading.editedArticleTitle = true
   const { response } = await createArticleOutline(text)
   const data = response.generated_text.split('\n').map(title => title.split('. ')[1] || title)
   articleOutline.value = data
   description.value = ''
   titleList.value = []
   switchValue.value = 'Output'
-  isLoading.articleTitle = false
+  isLoading.editedArticleTitle = false
 }
 
 </script>
@@ -86,7 +88,7 @@ const generateArticleOutline = async (text: string) => {
           v-for="title of titleList"
           :key="title"
           class="text-white bg-gray-400 border-0 py-2 px-3 my-2 focus:outline-none hover:bg-green-600 rounded text-md flex justify-center items-center"
-          @click="setArticleTitle(title)"
+          @click="setEditedArticleTitle(title)"
         >
           {{ title }}
         </button>
@@ -94,17 +96,17 @@ const generateArticleOutline = async (text: string) => {
       <br class="my-2">
       <footer>
         <BaseTextarea
-          v-model:value="articleTitle"
+          v-model:value="editedArticleTitle"
           title="Describe your Article (required)"
-          :disabled="isLoading.articleTitle"
+          :disabled="isLoading.editedArticleTitle"
           class="flex-1 mr-1"
         />
         <br class="my-2">
         <button
           class="w-full text-white bg-green-500 border-0 py-4 px-6 focus:outline-none hover:bg-green-600 rounded text-lg flex justify-center"
-          @click="generateArticleOutline(description)"
+          @click="generateSectionOutline(description)"
         >
-          <span v-if="isLoading.articleTitle" class="mx-2 animate-spin">
+          <span v-if="isLoading.editedArticleTitle" class="mx-2 animate-spin">
             <IconLoading />
           </span>
           <span v-else>Use As Title</span>
@@ -119,7 +121,7 @@ const generateArticleOutline = async (text: string) => {
         v-for="(title, index) of articleOutline"
         :key="title"
         :title="title"
-        @add="emits('add-editor-title', title)"
+        @add="emits('add-section-title', title)"
         @remove="removeArticleOutlineTitle(index)"
       />
     </article>
