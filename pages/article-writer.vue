@@ -16,7 +16,7 @@ const setArticleTitle = (text: string) => {
     <ArticleWriterQuery
       class="col-span-12 lg:col-span-5 m-2 overflow-hidden"
       @add-section-title="editor?.createSectionTitle"
-      @set-article-aitle="setArticleTitle"
+      @set-article-title="setArticleTitle"
     />
     <ArticleWriterEditor
       ref="editor"

@@ -32,7 +32,6 @@ const { createArticleTitle, createArticleOutline } = useApi()
 
 const generateArticleTitle = async (text: string) => {
   isLoading.titleList = true
-  emits('set-article-title', editedArticleTitle.value)
   const { response } = await createArticleTitle(text)
   const data = response.generated_text.split('\n').map(title => title.split('. ')[1] || title)
   titleList.value = data
@@ -40,6 +39,7 @@ const generateArticleTitle = async (text: string) => {
 }
 const generateSectionOutline = async (text: string) => {
   isLoading.editedArticleTitle = true
+  emits('set-article-title', editedArticleTitle.value)
   const { response } = await createArticleOutline(text)
   const data = response.generated_text.split('\n').map(title => title.split('. ')[1] || title)
   articleOutline.value = data
@@ -52,7 +52,7 @@ const generateSectionOutline = async (text: string) => {
 </script>
 
 <template>
-  <section class="bg-gray-900 shadow-md rounded-lg p-8 ml-2 flex flex-col justify-start">
+  <section class="bg-gray-900 shadow-md rounded-lg p-8 mx-2 flex flex-col justify-start">
     <header class="flex flex-col">
       <BaseSwitch
         v-model:value="switchValue"
