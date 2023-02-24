@@ -37,19 +37,6 @@ const switchSectionTitle = (firstIndex: number, secondIndex: number) => {
 
 const content = ref('')
 
-const setContent = (text: string) => {
-  content.value = text
-}
-
-// const insertContent = ({ queryString, insertString }: {
-//   queryString: string,
-//   insertString: string
-// }) => {
-//   const index = content.value.indexOf(queryString)
-//   console.log(index)
-//   console.log(insertString)
-// }
-
 const { createArticleHeader, createArticleSection, createArticleFooter } = useApi()
 
 const isLoading = reactive({
@@ -57,38 +44,43 @@ const isLoading = reactive({
 })
 
 const generateArticle = async () => {
-  try {
-    isLoading.article = true
-    const contentList = []
-    contentList.push(`<h1>${props.articleTitle}</h1>`)
-    contentList.push('<h2>簡介</h2>')
+  isLoading.article = true
+  const contentList: string[] = []
 
-    sectionTitleList.value.forEach(async (title, index) => {
-      contentList.push(`<h2>${title}</h2>`)
-      const responseSection = await createArticleSection(title)
-      const section = responseSection.response.generated_text
-      contentList[index + 2] = `<h2>${title}</h2><br><p>${section}</p>`
-    })
+  contentList.push(`<h1><strong>${props.articleTitle}</strong></h1>`)
+  contentList.push('<h2><strong>簡介</strong></h2>')
+  sectionTitleList.value.forEach((title) => {
+    contentList.push(`<h2><strong>${title}</strong></h2>`)
+  })
+  contentList.push('<h2><strong>結論</strong></h2>')
+  content.value = contentList.join('<br>')
 
-    contentList.push('<h2>結論</h2>')
-    setContent(contentList.join('<br>'))
+  // const handleSectionTitle = async (title: string, index:number) => {
+  //   contentList.push(`<h2><strong>${title}</strong></h2>`)
+  //   const responseSection = await createArticleSection(title)
+  //   // const section = responseSection?.response.generated_text
+  //   // contentList[index + 2] = `<h2><strong>${title}</strong></h2><br><p>${section}</p>`
+  //   return responseSection
+  // }
 
-    const titleListString = sectionTitleList.value.join('\n')
-    const responseHeader = await createArticleHeader(titleListString)
-    const header = responseHeader.response.generated_text
-    contentList[1] = `<h2>簡介</h2><br><p>${header}</p>`
-    setContent(contentList.join('<br>'))
+  const titleListString = sectionTitleList.value.join('\n')
+  const responseHeader = await createArticleHeader(titleListString).catch(error => console.error(error))
+  const header = responseHeader?.response.generated_text
+  contentList[1] = `<h2><strong>簡介</strong></h2><br><p>${header}</p>`
+  content.value = contentList.join('<br>')
 
-    const responseFooter = await createArticleFooter(header)
-    const footer = responseFooter.response.generated_text
-    contentList[sectionTitleList.value.length + 2] = `<h2>結論</h2><br><p>${footer}</p>`
-    setContent(contentList.join('<br>'))
-    console.log(contentList.join('<br>'))
-  } catch (error) {
-    console.error(error)
-  } finally {
-    isLoading.article = false
-  }
+  const responseSection = await Promise.all(sectionTitleList.value.map(title => createArticleSection(title)))
+  responseSection.forEach((response, index) => {
+    const section = response?.response.generated_text
+    contentList[index + 2] = `<h2><strong>${sectionTitleList.value[index]}</strong></h2><br><p>${section}</p>`
+  })
+  content.value = contentList.join('<br>')
+
+  const responseFooter = await createArticleFooter(header || '').catch(error => console.error(error))
+  const footer = responseFooter?.response.generated_text
+  contentList[sectionTitleList.value.length + 2] = `<h2><strong>結論</strong></h2><br><p>${footer}</p>`
+  content.value = contentList.join('<br>')
+  isLoading.article = false
 }
 
 defineExpose({ createSectionTitle })
@@ -143,7 +135,7 @@ defineExpose({ createSectionTitle })
     </article>
     <article
       v-if="switchValue === 'Content'"
-      class="h-[calc(100%-8rem)] bg-white"
+      class="h-[calc(100%-8rem)] bg-white text-black"
     >
       <QuillEditor v-model:content="content" content-type="html" class="bg-white" />
     </article>
