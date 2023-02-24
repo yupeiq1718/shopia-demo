@@ -28,6 +28,13 @@ const deleteTitle = (index: number) => {
   titleList.value.splice(index, 1)
 }
 
+const switchTitle = (firstIndex: number, secondIndex: number) => {
+  if (!titleList.value[firstIndex] || !titleList.value[secondIndex]) {
+    return
+  }
+  [titleList.value[firstIndex], titleList.value[secondIndex]] = [titleList.value[secondIndex], titleList.value[firstIndex]]
+}
+
 defineExpose({ addContent, createTitle })
 
 </script>
@@ -43,8 +50,10 @@ defineExpose({ addContent, createTitle })
         :key="title"
         :title="title"
         :index="index"
-        @save="updateTitle"
-        @delete="deleteTitle"
+        @save="updateTitle({ index, title: $event})"
+        @delete="deleteTitle(index)"
+        @switch-up="switchTitle(index, index - 1)"
+        @switch-down="switchTitle(index, index + 1)"
       />
     </section>
     <section

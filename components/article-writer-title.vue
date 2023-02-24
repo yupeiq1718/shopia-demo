@@ -11,11 +11,10 @@ interface Props {
 }
 
 interface Emits {
-  (event: 'save', value: {
-    index: number,
-    title: string
-  }): void,
-  (event: 'delete', value: number): void
+  (event: 'save', value: string): void,
+  (event: 'delete'): void,
+  (event: 'switch-up'): void
+  (event: 'switch-down'): void
 }
 
 const props = defineProps<Props>()
@@ -31,10 +30,7 @@ const setIsEdit = (value: boolean) => {
 const editedTitle = ref(props.title)
 
 const saveEditedTitle = () => {
-  emits('save', {
-    index: props.index,
-    title: editedTitle.value
-  })
+  emits('save', editedTitle.value)
   setIsEdit(false)
 }
 
@@ -67,19 +63,21 @@ const saveEditedTitle = () => {
         <IconDelete
           v-if="!isEdit"
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
-          @click="emits('delete', props.index)"
+          @click="emits('delete')"
         />
       </a>
       <a class="text-gray-500 ml-2">
         <IconUp
           v-if="!isEdit"
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
+          @click="emits('switch-up')"
         />
       </a>
       <a class="text-gray-500 ml-2">
         <IconDown
           v-if="!isEdit"
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
+          @click="emits('switch-down')"
         />
       </a>
     </span>
