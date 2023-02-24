@@ -55,14 +55,6 @@ const generateArticle = async () => {
   contentList.push('<h2><strong>結論</strong></h2>')
   content.value = contentList.join('<br>')
 
-  // const handleSectionTitle = async (title: string, index:number) => {
-  //   contentList.push(`<h2><strong>${title}</strong></h2>`)
-  //   const responseSection = await createArticleSection(title)
-  //   // const section = responseSection?.response.generated_text
-  //   // contentList[index + 2] = `<h2><strong>${title}</strong></h2><br><p>${section}</p>`
-  //   return responseSection
-  // }
-
   const titleListString = sectionTitleList.value.join('\n')
   const responseHeader = await createArticleHeader(titleListString).catch(error => console.error(error))
   const header = responseHeader?.response.generated_text
@@ -81,6 +73,8 @@ const generateArticle = async () => {
   contentList[sectionTitleList.value.length + 2] = `<h2><strong>結論</strong></h2><br><p>${footer}</p>`
   content.value = contentList.join('<br>')
   isLoading.article = false
+
+  switchValue.value = 'Content'
 }
 
 defineExpose({ createSectionTitle })
