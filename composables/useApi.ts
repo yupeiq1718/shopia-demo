@@ -47,6 +47,33 @@ const createArticleOutline = async (text:string) => {
   return { status, response }
 }
 
+const createArticleHeader = async (text:string) => {
+  const { status, response } = await useShopiaApi({
+    url: `&writer=article intro&language=Chinese&input_1=${text}&input_2=medium&input_3=Informative`,
+    method: 'post'
+  })
+
+  return { status, response }
+}
+
+const createArticleSection = async (text:string) => {
+  const { status, response } = await useShopiaApi({
+    url: `&writer=article section&language=Chinese&input_1=${text}&input_2=Short&input_3=Informative`,
+    method: 'post'
+  })
+
+  return { status, response }
+}
+
+const createArticleFooter = async (text:string) => {
+  const { status, response } = await useShopiaApi({
+    url: `&writer=summarize&language=Chinese&input_1=${text}`,
+    method: 'post'
+  })
+
+  return { status, response }
+}
+
 export default () => ({
-  createSocialPost, createArticleTitle, createArticleOutline
+  createSocialPost, createArticleTitle, createArticleOutline, createArticleHeader, createArticleSection, createArticleFooter
 })
