@@ -46,13 +46,6 @@ const saveEditedTitle = () => {
     />
     <span class="inline-flex w-full justify-end">
       <a class="text-gray-500 ml-2">
-        <IconCheck
-          v-if="isEdit"
-          class="fill-gray-400 cursor-pointer hover:fill-green-400"
-          @click="saveEditedTitle"
-        />
-      </a>
-      <a class="text-gray-500 ml-2">
         <IconEdit
           v-if="!isEdit"
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
@@ -78,6 +71,13 @@ const saveEditedTitle = () => {
           v-if="!isEdit"
           class="fill-gray-400 cursor-pointer hover:fill-green-400"
           @click="emits('switch-down')"
+        />
+      </a>
+      <a class="text-gray-500 ml-2">
+        <IconCheck
+          v-if="isEdit"
+          class="fill-gray-400 cursor-pointer hover:fill-green-400"
+          @click="saveEditedTitle"
         />
       </a>
     </span>
